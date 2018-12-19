@@ -56,10 +56,15 @@ class Users extends React.Component {
         })
     }
 
-    public handleSubmit(e){
-        e.preventDefault();
-        axios.post('http://127.0.0.1:8000/api/user', this.state).then(resp => {
-            console.log(resp)
+    public handleSubmit(state){
+        let user = {
+            name: state.name,
+            email: state.email,
+            password: state.password
+        };
+
+        axios.post('http://127.0.0.1:8000/api/user', user).then(res => {
+            console.log(res)
         }).catch(err => {
             console.log(err)
         })

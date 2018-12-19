@@ -53,10 +53,7 @@ class UserModal extends Component<parentProps> {
         viewArticles: false,
         creatingArticles: false,
         editingArticles: false,
-        deletedArticles: false,
-        name: '',
-        email: '',
-        password: ''
+        deletedArticles: false
     };
 
     private handleChangeTextField = name => event => {

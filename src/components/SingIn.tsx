@@ -39,29 +39,47 @@ const SingInFormWrapper = styled.div`
   }
 `;
 
-class SingIn extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            id: ''
-        };
+class SingIn extends React.Component{
+    state = {
+        email: null,
+        password: null
+    };
+
+    onChange(e){
+        const {name, value} = e.target;
+        this.setState({[name]: value});
     }
 
     handleSubmit(e){
         e.preventDefault();
+        const {email , password} = this.state;
 
-        let uri = 'http://localhost/Users';
-        axios.get(uri).then((res) => {
-            console.log('123')
+        axios.post('http://127.0.0.1:8000/api/login', {email , password})
+            .then((res) => {
+                this.setState({err: false});
+                console.log(res)
+                // this.props.history.push("home") ;
+            }).catch(err=> {
+            this.setState({err: true});
+            console.log(err)
         });
     }
+
     render () {
+
         return (
             <SingInFormWrapper className="singInForm__wrapper">
-                <Form className="" noValidate autoComplete="off">
+                <Form
+                    noValidate
+                    autoComplete="off"
+                    method="POST"
+                    action="/"
+                    onSubmit={this.handleSubmit.bind(this)}
+                >
                     <Card className="singInForm__card">
 
                         <CardActions className="singInForm__input-group">
+
                             <TextField
                                 id="standard-dense"
                                 label="Email"
@@ -70,15 +88,20 @@ class SingIn extends React.Component {
                                 name="email"
                                 margin="normal"
                                 autoComplete="email"
+                                onChange={this.onChange.bind(this)}
                             />
+
                             <TextField
                                 id="standard-password-input"
                                 label="Password"
                                 className="singInForm__input"
                                 type="password"
+                                name="password"
                                 autoComplete="current-password"
                                 margin="normal"
+                                onChange={this.onChange.bind(this)}
                             />
+
                         </CardActions>
 
                         <CardActions>
@@ -88,10 +111,11 @@ class SingIn extends React.Component {
                                 size="large"
                                 color="primary"
                                 className="singInForm__btn"
-                                onClick={this.handleSubmit}
+                                type="submit"
                                 >
                                 Sing In
                             </Button>
+
                         </CardActions>
 
                     </Card>
